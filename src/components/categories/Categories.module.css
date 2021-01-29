@@ -1,0 +1,45 @@
+.categories {
+  width: 90%;
+  margin-top: 2rem;
+  min-height: 60vh;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(410px, 1fr));
+  align-items: center;
+  justify-content: space-between;
+}
+.category {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40rem;
+  height: 40rem;
+  margin: 1rem;
+  background: url("https://image.freepik.com/free-photo/magnificent-woman-long-bright-skirt-dancing-studio-carefree-inspired-female-model-posing-with-pleasure-yellow_197531-11084.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  text-decoration: none;
+  transition: all 0.5s ease;
+}
+.category::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #485461;
+  background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
+  opacity: 0.3;
+}
+.category:hover {
+  box-shadow: 11px 11px 22px #777777, -11px -11px 22px #ffffff;
+}
+.category h2 {
+  font-size: 3rem;
+  color: white;
+  z-index: 5;
+}
