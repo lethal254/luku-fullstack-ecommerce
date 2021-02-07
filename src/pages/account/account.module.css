@@ -1,0 +1,117 @@
+.accountContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container {
+  height: 100%;
+  width: 100%;
+}
+.nav {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.link {
+  font-size: 2.5rem;
+  display: inline-block;
+  margin-right: 2rem;
+  text-decoration: none;
+  color: #6b9080;
+  padding: 1rem;
+  transition: all 0.7s ease;
+  border-radius: 5px;
+  font-weight: bolder;
+}
+.link:hover {
+  background-color: #6b9080;
+  color: white;
+}
+
+.lower {
+  height: 30%;
+  width: 100%;
+}
+.semiCircle {
+  position: relative;
+  background: #2c3e50;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.semiCircle > h1 {
+  color: white;
+  font-size: 4rem;
+  font-weight: 300;
+  margin-bottom: 2rem;
+}
+.semiCircle > h2 {
+  color: white;
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 2rem;
+}
+
+.semiCircle::before {
+  position: absolute;
+  content: "";
+  left: 50%;
+  z-index: 10;
+  width: 20rem;
+  height: 20rem;
+  border-radius: 50%;
+  background: inherit;
+  transform: translateX(-50%) translateY(50%);
+  bottom: 0px;
+}
+.avatar {
+  width: 15rem !important;
+  height: 15rem !important;
+  border: 2px solid white;
+  margin-bottom: 2rem;
+}
+.logoutButton {
+  height: 25%;
+  padding: 1.5rem;
+  font-size: 2rem;
+  background: transparent;
+  outline: none;
+  border: 2px solid white;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  margin-bottom: 1rem;
+}
+.logoutButton:hover {
+  background-color: #6b9080;
+  border: none;
+  color: white;
+}
+.auth {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+@media only screen and (max-width: 600px) {
+  .auth {
+    flex-direction: column;
+  }
+  .semiCircle::before {
+    display: none;
+  }
+  .semiCircle > h1 {
+    font-size: 2.5rem;
+  }
+  .semiCircle > h2 {
+    font-size: 1.5rem;
+  }
+  .semiCircle {
+    min-height: 85vh;
+  }
+}

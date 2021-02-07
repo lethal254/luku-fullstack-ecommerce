@@ -1,46 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import cartStyles from "./cart.module.css";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { Button } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loadCart,
+  selectCart,
+  selectTotalPrice,
+  updateTotal,
+} from "../../redux/slices/cartSlice";
+import CartItem from "../../components/cartItem/cartItem";
+import { useHistory } from "react-router-dom";
+import StripeCheckout from "react-stripe-checkout";
 
-function cart() {
-  const products = [
-    {
-      _id: { $oid: "60116fe7ae233b0e3a4100da" },
-      image:
-        "https://image.freepik.com/free-photo/pretty-young-stylish-sexy-woman-pink-luxury-dress-summer-fashion-trend-chic-style-sunglasses-blue-studio-background-shopping-holding-paper-bags-talking-mobile-phone-shopaholic_285396-2957.jpg",
-      title: "Women Clothing",
-      description: "A master piece for women",
-      price: "Ksh.7000",
-      category: "Women",
-      __v: 0,
-    },
-    {
-      _id: { $oid: "60116ffbae233b0e3a4100db" },
-      image:
-        "https://image.freepik.com/free-photo/full-length-shot-glad-curly-woman-striped-pants-jumping-purple-wall-indoor-portrait-wonderful-girl-sunglasses-fooling-around_197531-5125.jpg",
-      title: "Colorful clothes",
-      description: "A master piece for women",
-      price: "Ksh.8000",
-      category: "Men",
-      __v: 0,
-    },
-    {
-      _id: { $oid: "60116ffbae233b0e3a4100db" },
-      image:
-        "https://image.freepik.com/free-photo/full-length-shot-glad-curly-woman-striped-pants-jumping-purple-wall-indoor-portrait-wonderful-girl-sunglasses-fooling-around_197531-5125.jpg",
-      title: "Colorful clothes",
-      description: "A master piece for women",
-      price: "Ksh.8000",
-      category: "Men",
-      __v: 0,
-    },
-  ];
+function Cart() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadCart);
+    dispatch(updateTotal());
+  }, [dispatch]);
+  let history = useHistory();
+  const cartItems = useSelector(selectCart);
+  const total = useSelector(selectTotalPrice);
+  const handleToken = (token, adddresses) => {
+    console.log({ token, adddresses });
+  };
   return (
     <div className={cartStyles.cart}>
       <Table className={cartStyles.cart__upper}>
@@ -62,30 +49,15 @@ function cart() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {products?.map((product) => {
+          {cartItems?.map((product) => {
             return (
-              <TableRow>
-                <TableCell className={cartStyles.cart__details}>
-                  <img
-                    src={product.image}
-                    className={cartStyles.cart__productimage}
-                  />
-                </TableCell>
-                <TableCell className={cartStyles.cart__details} align='right'>
-                  {parseInt(product.price.replace("Ksh.", ""))}
-                </TableCell>
-                <TableCell className={cartStyles.cart__details} align='right'>
-                  <input className={cartStyles.cart__input} type='text' />
-                </TableCell>
-                <TableCell className={cartStyles.cart__details} align='right'>
-                  50000
-                </TableCell>
-                <TableCell className={cartStyles.cart__details} align='right'>
-                  <Button size='large' variant='outlined'>
-                    Remove
-                  </Button>
-                </TableCell>
-              </TableRow>
+              <CartItem
+                key={product.id}
+                id={product.id}
+                price={product.price}
+                image={product.image}
+                quantity={product.quantity}
+              />
             );
           })}
           <TableRow>
@@ -97,12 +69,17 @@ function cart() {
               className={cartStyles.cart__details}
               align='right'></TableCell>
             <TableCell className={cartStyles.cart__details} align='right'>
-              Total:30000
+              Total:{total}
             </TableCell>
             <TableCell className={cartStyles.cart__details} align='right'>
-              <Button size='large' variant='outlined'>
-                Check Out
-              </Button>
+              <StripeCheckout
+                disabled={cartItems.length === 0}
+                stripeKey='pk_test_51IHDfYHXhyBi5fNEWByqlL27AzW32jjXKF5Nv5aFw1HpuUQBFUFJh1Okb7SOiOBodgm6oghYMb70Ch2OAqYugRL600CM6A83rz'
+                token={handleToken}
+                billingAddress
+                shippingAddress
+                amount={total * 100}
+              />
             </TableCell>
           </TableRow>
         </TableBody>
@@ -111,4 +88,4 @@ function cart() {
   );
 }
 
-export default cart;
+export default Cart;

@@ -1,31 +1,26 @@
 import React, { useEffect, useState } from "react";
 import shopStyles from "./Shop.module.css";
-import CheckBox from "@material-ui/core/Checkbox";
 import Card from "../../components/cards/Card";
-import axios from "../../axios";
 import { Radio } from "@material-ui/core";
+import { useSelector, useDispatch } from "react-redux";
+import { loadProducts, selectProducts } from "../../redux/slices/productsSlice";
+import {
+  loadCategories,
+  selectCategories,
+} from "../../redux/slices/categorySlice";
 
 function Shop({ match }) {
   const [category, setCategory] = useState("" || match.params.category);
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
+  const products = useSelector(selectProducts);
+  const categories = useSelector(selectCategories) || [];
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    (async () => {
-      const response = await axios.get("/categories");
-      setCategories(response.data);
-    })();
-  }, []);
-  console.log(match.params.category);
-
+    dispatch(loadCategories);
+  }, [dispatch]);
   useEffect(() => {
-    (async () => {
-      const response = await axios.get(
-        `/products${category ? "?category=" + category : ""}`
-      );
-      setProducts(response.data);
-    })();
-  }, [category]);
+    dispatch(loadProducts(category));
+  }, [category, dispatch]);
 
   return (
     <div className={shopStyles.shop}>
@@ -66,6 +61,7 @@ function Shop({ match }) {
                 return (
                   <Card
                     key={_id}
+                    id={_id}
                     image={image}
                     title={title}
                     description={description}
